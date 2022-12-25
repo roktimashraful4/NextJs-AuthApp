@@ -9,8 +9,13 @@ import { getSession,useSession, signIn, signOut } from "next-auth/react"
 
 const signInPage = () => {
     const [show, setShow] = useState(false)
+    // Google logIn function 
     const hendleGoogleSignIn = async()=> { 
         signIn('google',{callbackUrl:"http://localhost:3000"})
+    }
+    // Github login
+    const hendelGithubSignIn = async ()=> { 
+        signIn('github',{callbackUrl:"http://localhost:3000"})
     }
   return (
     <LoginLayout>
@@ -49,7 +54,7 @@ const signInPage = () => {
                      </button>
                 </div>
                 <div className='input-button'>
-                    <button type="button" className={FromStyle.button_custom}>
+                    <button type="button" onClick={hendelGithubSignIn} className={FromStyle.button_custom}>
                         Sign In with Github
                         <Image src={'/images/github.svg'} width={25} height={25} alt='github Icons'/>
                         </button>
@@ -68,7 +73,6 @@ export default signInPage
 
 export async function getServerSideProps({ req}:any){
     const session = await getSession({ req })
-    console.log(session)
     if(session){
       return {
         redirect : {
