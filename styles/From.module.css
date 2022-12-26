@@ -26,3 +26,8 @@
 .input_text:focus +* { 
     color: #6366f1;
 }
+
+.error { 
+    @apply w-full py-1 bg-rose-400 mb-4 border border-red-600 text-stone-100 rounded-lg; 
+   
+}

@@ -2,13 +2,35 @@ import Head from "next/head";
 import LoginLayout from "../layout/loginLayout";
 import Link from 'next/link';
 import FromStyle from '../styles/From.module.css';
-import Image from 'next/image';
 import { FaEnvelope, FaEye, FaEyeSlash} from "react-icons/fa";
 import { useState } from 'react';
 import { getSession } from "next-auth/react";
+import { useFormik } from "formik";
+
 
 const signUp = () => {
   const [show, setShow] = useState(false)
+  interface Values { 
+    username: string; 
+    email: string;
+    password: string; 
+    cpassword:string;
+  }
+
+  const handleSubmit = async (values:Values)=>{ 
+    console.log(values) 
+  }
+  const formik = useFormik({
+      initialValues:{
+          username: '', 
+          email:'',
+          password:'',
+          cpassword:'',
+      },
+      onSubmit: handleSubmit,
+  });
+
+
   return (
     <LoginLayout>
       <Head>
@@ -21,27 +43,27 @@ const signUp = () => {
             </div>
 
             {/* form section  */}
-            <form className='flex flex-col gap-5 select-none'>
+            <form className='flex flex-col gap-5 select-none' onSubmit={formik.handleSubmit}>
                 <div className={FromStyle.input_group}>
-                    <input className={FromStyle.input_text} type="text" name="username" id="username" placeholder='Enter username '/>
+                    <input className={FromStyle.input_text} type="text" {...formik.getFieldProps('username')} name="username" id="username" placeholder='Enter username '/>
                     <span className='icon flex items-center px-4'>
                         <FaEnvelope size={24}/> 
                     </span>
                 </div>
                 <div className={FromStyle.input_group}>
-                    <input className={FromStyle.input_text} type="email" name="email" id="email" placeholder='Email '/>
+                    <input className={FromStyle.input_text} type="email" {...formik.getFieldProps('email')} name="email" id="email" placeholder='Email '/>
                     <span className='icon flex items-center px-4'>
                         <FaEnvelope size={24}/> 
                     </span>
                 </div>
                 <div className={FromStyle.input_group}>
-                    <input type={show ? "text" : "password"} className={FromStyle.input_text} name="password" id="password" placeholder='password '/>
+                    <input type={show ? "text" : "password"} {...formik.getFieldProps("password")} className={FromStyle.input_text} name="password" id="password" placeholder='password '/>
                     <span className='icon flex items-center px-4 cursor-pointer hover:text-indigo-500'>
                         {show ? <FaEye size={24} onClick={()=>{setShow(false)}}/> : <FaEyeSlash size={24} onClick={()=>{setShow(true)}} />}  
                     </span>
                 </div>
                 <div className={FromStyle.input_group}>
-                    <input type={show ? "text" : "password"} className={FromStyle.input_text} name="cpassword" id="cpassword" placeholder='Conform Password'/>
+                    <input type={show ? "text" : "password"} {...formik.getFieldProps('cpassword')} className={FromStyle.input_text} name="cpassword" id="cpassword" placeholder='Conform Password'/>
                     <span className='icon flex items-center px-4 cursor-pointer hover:text-indigo-500'>
                         {show ? <FaEye size={24} onClick={()=>{setShow(false)}}/> : <FaEyeSlash size={24} onClick={()=>{setShow(true)}} />}  
                     </span>

@@ -40,7 +40,7 @@ const AuthUser = ({session, handleSignOut}:any)=> {
     <div className='w-1/2 mx-auto text-center'>
      <h1 className='text-3xl font-bold text-gray-700 my-5 p-4'> Home page as a login </h1>
      <div className='flex justify-center'>
-        <Image className='rounded-full' src={session.user.image} width={50} height={50} alt='profile'/ >
+       {session.user.image &&  <Image className='rounded-full' src={session.user.image} width={50} height={50} alt='profile'/ > } 
      </div>
       <h2>{session.user.name}</h2> 
       <h2>{session.user.email}</h2> 
@@ -52,3 +52,11 @@ const AuthUser = ({session, handleSignOut}:any)=> {
   )
 }
 
+
+export async function getServerSideProps({ req}:any){
+    const session = await getSession({ req })
+    return {
+      props: { session }
+    }
+  
+  }
